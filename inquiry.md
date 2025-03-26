@@ -1,49 +1,30 @@
-
-Kompilering görs inte via makefile utan
-t.ex med testbalance.cpp
- g++ -c testbalance.cpp bintree.cpp
- g++ -o balancerunner testtree.o testbalance.o
- ./testrunner
-
 What did you learn from this assignment?
-Jag lärde mig mycket om rekursion och har nu mycket djupare förståelse för det
+Jag lärde mig mycket men det främsta jag lärde mig var virtual och override var och hur det används.
 
-What was hardest to implement in this assignment?
-Remove functionen var defenitivt svårast att implementera. Att ändra om pekarna och leta upp vilken pekare som skulle
-ändras när man tar bort en nod orsakade en del problem för mig.
+What was most difficult to do in this assignment?
+Det svåraste var att implementera pawn promotion och att plocka bort och lägga till pjäser. Speciellt i den mer
+komplicerade AIn OneStepAI som även har några extra regler att följa innan promotion sker.
 
-If the signature of insert was changed like below, changing the key of p would not have the desired effect, why is that?
-Skillnaden är att den nu är en kopia av pekaren och inte en referens. Det betyder att alla förändringar som sker görs på p
-görs på kopian istället för orginalnoden.
+The code relies on virtual functions. Could the code have been written without virtual functions?
+Det är möjligt men det hade varit svårare och väldigt mycket mer tidskrävande och det hade blivit mer och mindre flexibel
+kod.
 
+Could ChessPiece have been an abstract class?
+Cppreference definierar abstract class "Defines an abstract type which cannot be instantiated, but can be used as a base class." Jag tycker därmed det hade varit möjligt att ha ChessPiece som abstract class då ChessPiece i sig inte behöver använda
+några av sina "egna" metoder. ChessPiece::validMove används aldrig t.ex utan overrideas alltid.
 
-Are you able to pass a value, such as 17, to a const int & parameter ?
-Ja, detta skapar en referens till const int:en som ges till funktionen.
+There was no separate unit test for each function in this assignment, instead you tested several functions at once with different boards. What are the benefits and drawbacks for this kind of testing compared to unit tests?
+Nackdelen med detta sätt att testa är att det är svårare att leta upp vart felet ligger någonstans om testet inte get korrekt
+resultat. Några fördelar är att inte lika många test behöver skrivas och att det även testar hur funktionerna och metoderna jobbar med varandra till skillnad från unittest som framför allt testar beståndsdelarna av programmet.
 
-How do you check if two objects are equal if they only have operator< and not operator==?
-om man använder if(a < b), else if(a > b) och else{} så har man else som == då om ingen av dom är större än den andra så
-är de lika stora.
+What is the problem with a diamond inheritance?
+Det främsta problemet med diamond inheritance är att om en klass ärver från två olika klasser som båda har ärvt från samma basklass så kan det bli tvetydigt för kompilatorn vilken av de två klassernas metod den ska kalla på då båda har ärvt den från samma basklass.
 
-Does a < b and !(b < a) compare the same thing?
-a < b kollar om a är mindra än b medans !(b < a) kollar om den b inte är mindre än a. Detta är ekvivalent med att kolla om 
-a är större eller lika stor som b så de är inte riktigt samma
+Did you encounter any problem with protected member variables and, if so, how did you solve them?
+Ja jag stötte på en hel del problem med protected och löste det i princip alltid med get-metoder. Jag testade i början lite med friend men tyckte get var den enklare lösningen.
 
-Write down data from your test runs, Första omgången med std::shuffle och next_permutation
-The average height of the tree in at least 800 iterations: 30.68
-The highest maximum height: 37
-The average minimum height: 5.08
-The lowest minimum height: 1
-The average difference between minimum and maximum height: 25.60
-The greatest difference between minimum and maximum height: 35
-The lowest difference between minimum and maximum height: 20
+Create a queen object and try to set the unnecessaryInt in ChessPiece. What happens?
+Det ändrar endast drottningens version av unnecessaryInt medans rook och bishop har sina egna kopior av unnecessaryInt.
 
-Med annan shuffle och 5000 istället för 9000 i storlek. Gjordes med 
-The average height of the tree in at least 800 iterations: 28.26
-The highest maximum height: 36
-The average minimum height: 4.88
-The lowest minimum height: 2
-The average difference between minimum and maximum height: 23.38
-The greatest difference between minimum and maximum height: 32
-The lowest difference between minimum and maximum height: 17
-
-
+Think about if it would be better if the queen had a bishop and a rook (as members) instead of inherited from them?
+Ja jag tycker att det hade varit bättre då drottningen inte använder all funktionalitet för bishop och rook. Drottningen använder endast deras versioner av validMove för att kolla om ett move är valid så jag tycker det känns onödigt att de den ska ärva av klasserna då det även skapar diamond inheritance problemet som nämndes tidigare.
